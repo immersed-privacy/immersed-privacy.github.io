@@ -10,9 +10,9 @@ To separate **perception failure** (the model cannot see the sensitive object) f
 Two model-specific patterns emerge:
 
 - **Perception-limited models.** `gemini-3.1-pro` shows the highest perception failure (above 30% across all settings), while its awareness failure remains moderate. Its Tier 1 errors are primarily attributable to an inability to resolve the sensitive object from cluttered close-up views.
-- **Awareness-limited models.** `qwen3-omni-flash` exhibits the opposite pattern. Perception rates are comparable to other models, but awareness failure is disproportionately high (28–38%) and *increases* with scene complexity. Even when the model correctly perceives the sensitive item, it frequently fails to classify it as sensitive — indicating a genuine privacy-awareness deficit rather than a visual limitation.
+- **Awareness-limited models.** `qwen3-omni-flash` exhibits the opposite pattern. Perception rates are comparable to other models, but awareness failure is disproportionately high (28–38%) and *increases* with scene complexity. Even when the model correctly perceives the sensitive item, it frequently fails to classify it as sensitive.
 
-Critically, **no model achieves fewer than 10% in both failure modes simultaneously**, demonstrating that perception and awareness are inherently entangled in real-world embodied scenarios — a trustworthy agent must both visually ground an object *and* recognize its privacy implications.
+Critically, **no model achieves fewer than 10% in both failure modes simultaneously**, demonstrating that perception and awareness are inherently entangled in real-world embodied scenarios, and thereby a trustworthy agent must both visually ground an object *and* recognize its privacy implications.
 
 ### PDDL Text-Only Baseline Comparison
 
@@ -33,7 +33,6 @@ Three findings emerge:
 
 - **PDDL object names leak semantics.** IR under the PDDL condition is substantially higher across all models. Because PDDL type names like `social_security_card.n.01` directly encode the object's identity, models can resolve sensitivity from the name alone, bypassing the perceptual and contextual reasoning that the visual condition demands.
 - **Absence of visual evidence inflates false positives.**  Under the PDDL condition models predict far more objects per scene than under the visual condition, indicating that without concrete visual evidence to anchor judgments, models default to flagging aggressively, substantially inflating false positives.
-The most extreme case is qwen3-omni-flash, which predicts 8.0 objects per scene in the 15-item PDDL condition versus only 0.2 in the visual condition.
-- **Visual clutter is not captured by PDDL.** Under the PDDL condition the performance drop from 5 to 15 items is modest (e.g., `gemini-3-flash` recall: 0.98 → 0.92), whereas the visual condition exhibits sharper degradation. This confirms that visual scene clutter constitutes a genuine challenge that symbolic representations cannot simulate.
+- **Visual clutter is not captured by PDDL.** Under the PDDL condition the performance drop from 5 to 15 items is modest, whereas the visual condition exhibits sharper degradation. This confirms that visual scene clutter constitutes a genuine challenge that symbolic representations cannot simulate.
 
 Together, these analyses demonstrate that **reducing visual privacy to text classification does not produce reliable sensitivity judgments**, motivating the necessity of our multimodal evaluation framework.
